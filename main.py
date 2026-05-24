@@ -390,3 +390,6 @@ def send_renewal_reminders(body: RenewalReminderRequest):
         "queued_items": items,
         "send_result": send_result,
     }
+@app.get("/run-renewal-reminders")
+def run_renewal_reminders_get():
+    return send_renewal_reminders(RenewalReminderRequest(limit=100))
