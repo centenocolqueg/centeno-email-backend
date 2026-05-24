@@ -392,4 +392,15 @@ def send_renewal_reminders(body: RenewalReminderRequest):
     }
 @app.get("/run-renewal-reminders")
 def run_renewal_reminders_get():
-    return send_renewal_reminders(RenewalReminderRequest(limit=100))
+    result = send_renewal_reminders(RenewalReminderRequest(limit=100))
+
+    send_result = result.get("send_result", {})
+
+    return {
+        "ok": True,
+        "checked_users": result.get("checked_users", 0),
+        "renewal_created": result.get("created_renewal_reminders", 0),
+        "expired_created": result.get("created_expired_reminders", 0),
+        "sent": send_result.get("sent", 0),
+        "errors": send_result.get("errors", 0),
+    }
